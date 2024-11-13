@@ -52,6 +52,7 @@ export function GoalManager(props: Props) {
     dispatch(updateGoalRedux(updatedGoal))
 
     // Update database
+    updateGoalApi(props.goal.id, updatedGoal)
   }
 
   useEffect(() => {
