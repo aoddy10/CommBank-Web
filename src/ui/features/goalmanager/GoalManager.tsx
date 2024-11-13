@@ -34,7 +34,7 @@ export function GoalManager(props: Props) {
   const [targetDate, setTargetDate] = useState<Date | null>(null)
   const [targetAmount, setTargetAmount] = useState<number | null>(null)
 
-  const pickEmojiOnClick = (emoji: BaseEmoji, event: MouseEvent) => {
+  const pickEmojiOnClick = (emoji: BaseEmoji, event: React.MouseEvent) => {
     event.stopPropagation()
 
     setIcon(emoji.native)
@@ -42,15 +42,16 @@ export function GoalManager(props: Props) {
 
     const updatedGoal: Goal = {
       ...props.goal,
-      icon: icon ?? props.goal.icon,
+      icon: emoji.native ?? props.goal.icon,
       name: name ?? props.goal.name,
       targetDate: targetDate ?? props.goal.targetDate,
       targetAmount: targetAmount ?? props.goal.targetAmount,
     }
 
+    // Update Redux store
     dispatch(updateGoalRedux(updatedGoal))
-    // TODO(TASK-2) Update Redux store
-    // TODO(TASK-3) Update database
+
+    // Update database
   }
 
   useEffect(() => {
@@ -143,7 +144,7 @@ export function GoalManager(props: Props) {
         hasIcon={hasIcon()}
         onClick={(event) => event.stopPropagation()}
       >
-        <EmojiPicker onClick={() => pickEmojiOnClick} />
+        <EmojiPicker onClick={pickEmojiOnClick} />
       </EmojiPickerContainer>
 
       <GoalIconContainer shouldShow={hasIcon()}>
@@ -232,6 +233,7 @@ const EmojiPickerContainer = styled.div<EmojiPickerContainerProps>`
   top: ${(props) => (props.hasIcon ? '10rem' : '2rem')};
   left: 0;
 `
+
 const GoalIconContainer = styled.div<GoalIconContainerProps>`
   display: ${(props) => (props.shouldShow ? 'flex' : 'none')};
 `
